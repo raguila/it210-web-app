@@ -44,18 +44,12 @@ $bundle = AppAsset::register($this);
                     $isAdmin?
                     ['label' => 'Users', 'url' => ['/users/index']]: //additional
                     "",
-                    $isAdmin?
-                    ['label' => 'Profiles', 'url' => ['/profiles/index']]: //additional
-                    "",
-                    $isUser?
-                    ['label' => 'Posts', 'url' => ['/posts/index']]: //additional
-                    "",
                     ['label' => 'About', 'url' => ['/site/about']],
                     ['label' => 'Contact', 'url' => ['/site/contact']],
                     
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                        ['label' => 'Logout (' . Yii::$app->user->identity->UserName . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']],
                 ],

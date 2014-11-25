@@ -12,11 +12,9 @@ class LoginForm extends Model
 {
     public $username;
     public $password;
-    public $usertype;
     public $rememberMe = true;
 
     private $_user = false;
-    private $_usertype = 0;
 
     /**
      * @return array the validation rules.
@@ -44,13 +42,10 @@ class LoginForm extends Model
     {
         if (!$this->hasErrors()) {
             $user = $this->getUser();
-            //$usertype = $this->getUsertype();
-            if (!$user || !$user->validatePassword($this->password)) {
+
+            if (!$user) {
                 $this->addError($attribute, 'Incorrect username or password.');
             }
-            
-            //Yii::$app->session['usertype']=$usertype;
-            
         }
     }
 
@@ -61,9 +56,6 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            $user = $this->getUser();
-            $usertype = $user->getUsertype();
-            Yii::$app->session['usertype']=$usertype;
             return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
         } else {
             return false;
@@ -77,8 +69,8 @@ class LoginForm extends Model
      */
     public function getUser()
     {
-        if ($this->_user === false) {
-            $this->_user = Users::find()->where(['username' => $this->username, 'password' => md5($this->password)])->one(); //Change the model. Then change the config/web
+        if ($this->_user === false) {            
+            $this->_user = Users::find()->where(['UserName' => $this->username, 'Password' => md5($this->password)])->one();   
         }
 
         return $this->_user;

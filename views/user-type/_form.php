@@ -4,19 +4,15 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Profiles */
+/* @var $model app\models\UserType */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="profiles-form">
+<div class="user-type-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'userid')->textInput() ?>
-
-    <?= $form->field($model, 'firstname')->textInput(['maxlength' => 20]) ?>
-
-    <?= $form->field($model, 'lastname')->textInput(['maxlength' => 20]) ?>
+    <?= $form->field($model, 'UserTypeDescription')->textInput(['maxlength' => 50]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

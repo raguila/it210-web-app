@@ -12,11 +12,25 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'username')->textInput(['maxlength' => 10]) ?>
+    <?= $form->field($model, 'FirstName')->textInput(['maxlength' => 30]) ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => 50]) ?>
+    <?= $form->field($model, 'MiddleName')->textInput(['maxlength' => 30]) ?>
 
-    <?= $form->field($model, 'usertype')->textInput() ?>
+    <?= $form->field($model, 'LastName')->textInput(['maxlength' => 30]) ?>
+
+    <?= $form->field($model, 'UserName')->textInput(['maxlength' => 30]) ?>
+
+    <?= $form->field($model, 'Password')->passwordInput(['maxlength' => 50]) ?>
+
+    <?= $form->field($model, 'UserTypeID')->textInput() ?>
+
+    <?= $form->field($model, 'ClassSection')->textInput(['maxlength' => 30]) ?>
+
+    <?= $form->field($model, 'Picture')->textInput(['maxlength' => 30]) ?>
+
+    <?= $form->field($model, 'StudentNumber')->textInput(['maxlength' => 15]) ?>
+
+    <?= $form->field($model, 'EmployeeNumber')->textInput(['maxlength' => 15]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

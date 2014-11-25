@@ -2,21 +2,31 @@
 
 namespace app\models;
 
+use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
 
 /**
  * This is the model class for table "users".
  *
- * @property integer $id
- * @property string $username
- * @property string $password
- * @property integer $usertype
+ * @property integer $UserID
+ * @property string $FirstName
+ * @property string $MiddleName
+ * @property string $LastName
+ * @property string $UserName
+ * @property string $Password
+ * @property integer $UserTypeID
+ * @property string $ClassSection
+ * @property string $Picture
+ * @property string $StudentNumber
+ * @property string $EmployeeNumber
  *
+ * @property Comments[] $comments
  * @property Posts[] $posts
- * @property Profiles[] $profiles
+ * @property UserType $userType
  */
-class Users extends \yii\db\ActiveRecord  implements IdentityInterface
+class Users extends ActiveRecord  implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -32,10 +42,11 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'usertype'], 'required'],
-            [['usertype'], 'integer'],
-            [['username'], 'string', 'max' => 10],
-            [['password'], 'string', 'max' => 50]
+            [['FirstName', 'MiddleName', 'LastName', 'UserName', 'Password', 'UserTypeID', 'ClassSection', 'Picture', 'StudentNumber', 'EmployeeNumber'], 'required'],
+            [['UserTypeID'], 'integer'],
+            [['FirstName', 'MiddleName', 'LastName', 'UserName', 'ClassSection', 'Picture'], 'string', 'max' => 30],
+            [['Password'], 'string', 'max' => 50],
+            [['StudentNumber', 'EmployeeNumber'], 'string', 'max' => 15]
         ];
     }
 
@@ -45,11 +56,26 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Username',
-            'password' => 'Password',
-            'usertype' => 'Usertype',
+            'UserID' => 'User ID',
+            'FirstName' => 'First Name',
+            'MiddleName' => 'Middle Name',
+            'LastName' => 'Last Name',
+            'UserName' => 'User Name',
+            'Password' => 'Password',
+            'UserTypeID' => 'User Type ID',
+            'ClassSection' => 'Class Section',
+            'Picture' => 'Picture',
+            'StudentNumber' => 'Student Number',
+            'EmployeeNumber' => 'Employee Number',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comments::className(), ['UserID' => 'UserID']);
     }
 
     /**
@@ -57,18 +83,18 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
      */
     public function getPosts()
     {
-        return $this->hasMany(Posts::className(), ['userid' => 'id']);
+        return $this->hasMany(Posts::className(), ['UserID' => 'UserID']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProfiles()
+    public function getUserType()
     {
-        return $this->hasMany(Profiles::className(), ['userid' => 'id']);
+        return $this->hasOne(UserType::className(), ['UserTypeID' => 'UserTypeID']);
     }
-    /** INCLUDE USER LOGIN VALIDATION FUNCTIONS**/
-        /**
+
+    /**
      * @inheritdoc
      */
     public static function findIdentity($id)
@@ -78,19 +104,12 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
 
     /**
      * @inheritdoc
-     */
-/* modified */
+     */    
     public static function findIdentityByAccessToken($token, $type = null)
     {
           return static::findOne(['access_token' => $token]);
     }
  
-/* removed
-    public static function findIdentityByAccessToken($token)
-    {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
-*/
     /**
      * Finds user by username
      *
@@ -99,7 +118,7 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['username' => $username]);
+        return static::findOne(['UserName' => $username]);
     }
 
     /**
@@ -110,7 +129,7 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
      */
     public static function findByPasswordResetToken($token)
     {
-        $expire = \Yii::$app->params['user.passwordResetTokenExpire'];
+        $expire = \Yii::$app->params['users.passwordResetTokenExpire'];
         $parts = explode('_', $token);
         $timestamp = (int) end($parts);
         if ($timestamp + $expire < time()) {
@@ -131,10 +150,7 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
         return $this->getPrimaryKey();
     }
     
-    public function getUsertype() //Added function
-    {
-        return $this->usertype;
-    }
+
     /**
      * @inheritdoc
      */
@@ -160,7 +176,6 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
     public function validatePassword($password)
     {
         return $this->password === md5($password);
-        //return Security::validatePassword($password, $this->password_hash);
     }
 
     /**
@@ -196,5 +211,4 @@ class Users extends \yii\db\ActiveRecord  implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
-    
 }

@@ -4,7 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Users;
-use yii\data\ActiveDataProvider;
+use app\models\search\UsersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -32,11 +32,11 @@ class UsersController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Users::find(),
-        ]);
+        $searchModel = new UsersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -60,35 +60,15 @@ class UsersController extends Controller
      */
     public function actionCreate()
     {
-//        $model = new Users();
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
-//            return $this->render('create', [
-//                'model' => $model,
-//            ]);
-//        }
-            $success = false;
-        
-            $model = new Users();
+        $model = new Users();
 
-            if ($model->load(Yii::$app->request->post())){            
-
-                $model->password = md5($model->password);
-
-                if($model->save()){
-                    $success = true;
-                }
-            }   
-
-            if($success){
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create', [
-                    'model' => $model,
-                ]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->UserID]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
@@ -99,39 +79,15 @@ class UsersController extends Controller
      */
     public function actionUpdate($id)
     {
-//        $model = $this->findModel($id);
-//
-//        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//            return $this->redirect(['view', 'id' => $model->id]);
-//        } else {
-//            return $this->render('update', [
-//                'model' => $model,
-//            ]);
-//        }
-            $success = false;
-        
-            $model = $this->findModel($id); 
+        $model = $this->findModel($id);
 
-            $oldPassword = $model->password;
-
-            if ($model->load(Yii::$app->request->post())){            
-
-                if($model->password!=$oldPassword){
-                    $model->password = md5($model->password);
-                }
-
-                if($model->save()){
-                    $success = true;
-                }
-            }   
-
-            if($success){
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('update', [
-                    'model' => $model,
-                ]);
-            }
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->UserID]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**

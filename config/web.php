@@ -15,7 +15,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\Users',
+            'identityClass' => 'app\models\Users', //dapat papalitan
             'enableAutoLogin' => false, //important!!!
         ],
         'errorHandler' => [
