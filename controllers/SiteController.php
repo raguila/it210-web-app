@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\NewsFeed;
+use app\models\search\NewsFeedSearch;
 use app\models\Users;
 use yii\data\ActiveDataProvider;
 
@@ -103,10 +104,14 @@ class SiteController extends Controller
         //$searchModel = new PostsSearch();
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $model = new NewsFeed();
+        //$query = NewsFeed::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => NewsFeed::find(),
-        ]);
+        $searchModel = new NewsFeedSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => $query,
+        // ]);
         
         
         $success = false;
@@ -119,10 +124,6 @@ class SiteController extends Controller
 
             Yii::info($model->TimeStamp, __METHOD__);
             $user = Users::find()->where(['UserID' => $model->UserID])->one();
-            
-            Yii::info($user->FirstName, __METHOD__);
-            $model->Name = $user->FirstName;
-
             if($model->save()){
                 $success = true;
             }
@@ -130,11 +131,7 @@ class SiteController extends Controller
         if($success){
             return $this->refresh();
         } else {
-            
-            //$users = Users::find()->where(['UserID' => $dataProvider->UserID]);
-            //Yii::info($dataProvider, __METHOD__);
             return $this->render('feed', [
-                //'searchModel' => $searchModel,
                 'model' => $model,
                 'dataProvider' => $dataProvider,
             ]);

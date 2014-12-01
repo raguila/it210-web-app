@@ -59,7 +59,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'Name',
                         // 'Like',
                         // 'Pinned',
-                        // 'TimeStamp',
+                         'TimeStamp',
 
                         //['class' => 'yii\grid\ActionColumn'],
                     ],

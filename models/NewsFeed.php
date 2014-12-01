@@ -29,7 +29,6 @@ use Yii;
 class NewsFeed extends \yii\db\ActiveRecord
 {
 
-    public $Name;
     /**
      * @inheritdoc
      */
@@ -47,7 +46,7 @@ class NewsFeed extends \yii\db\ActiveRecord
             [['PostTypeID', 'AttachmentTypeID', 'UserID', 'Likes', 'Pinned'], 'integer'],
             [['PostContent', 'TimeStamp'], 'required'],
             [['TimeStamp'], 'safe'],
-            [['Name'], 'string', 'max' => 20],
+            //[['Name'], 'string', 'max' => 20],
             [['PostTitle', 'Tags', 'Attachment'], 'string', 'max' => 50],
             [['PostContent'], 'string', 'max' => 255]
         ];
@@ -69,9 +68,15 @@ class NewsFeed extends \yii\db\ActiveRecord
 
         return true;
     }
-    public function getUser()
+    public function getUsers()
     {
         return $this->hasOne(Users::className(), ['UserID' => 'UserID']);
+    }
+
+        /* Getter for country name */
+    public function getName() 
+    {
+        return $this->users->FirstName.' '.$this->users->LastName;
     }
 
 }
