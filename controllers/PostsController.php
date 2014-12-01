@@ -8,6 +8,8 @@ use app\models\search\PostsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Comments;
+use app\models\search\CommentsSearch;
 
 /**
  * PostsController implements the CRUD actions for Posts model.
@@ -48,9 +50,24 @@ class PostsController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
+        /*return $this->render('view', [
             'model' => $this->findModel($id),
-        ]);
+        ]);*/
+        $searchModel = new CommentsSearch();
+        $comments = $searchModel->search(Yii::$app->request->queryParams);
+
+        $newComment = new Comments();
+        $newComment->TimeStamp = date("Y-m-d H:i:s");
+
+        if ($newComment->load(Yii::$app->request->post()) && $newComment->save()) {
+            return $this->redirect(['view', 'id' => $newComment->PostID]);
+        } else {
+            return $this->render('view', [
+                'model' => $this->findModel($id),
+                'newComment' => $newComment,
+                'comments' => $comments,
+            ]);
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\ActiveForm;
 use app\models\Comments;
+use yii\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Posts */
@@ -46,25 +47,38 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <br/><br/>
     <h3>Add a comment</h3>
-    <?php 
-        $newComment = new Comments()
-;
+    <?php
         $form = ActiveForm::begin(); ?>
 
         <?= $form->field($newComment, 'CommentContent')->textInput(['maxlength' => 255]) ?>
 
-        <?= $form->field($newComment, 'Attachment')->textInput(['maxlength' => 50]) ?>
+        <?= $form->field($newComment, 'Attachment')->textInput(['maxlength' => 50, 'value' => 'NA']) ?>
 
-        <?= $form->field($newComment, 'AttachmentTypeID')->textInput() ?>
-
+        <?= $form->field($newComment, 'AttachmentTypeID')->textInput(['value'=>1]) ?>
 
         <?= $form->field($newComment, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
-        <?= $form->field($model, 'PostID')->textInput() ?>
 
-        <?= $form->field($newComment, 'Like')->textInput() ?>
+        <?= $form->field($newComment, 'PostID',['template' => "{input}",])->hiddenInput(['value'=>$model->PostID]) ?>
+        
+        <?= $form->field($newComment, 'Like', ['template' => "{input}"])->hiddenInput(['value'=>0]) ?>
 
-        <?= $form->field($newComment, 'TimeStamp')->textInput() ?>
-
+        <div class="form-group">
+            <?= Html::submitButton('Post', ['class' => 'btn btn-success']) ?>
+        </div>
         
     <?php ActiveForm::end(); ?>
+
+    <br/><br/>
+    <?= GridView::widget([
+        'dataProvider' => $comments,
+        //'filterModel' => $searchModel,
+        'columns' => [
+            //['class' => 'yii\grid\SerialColumn'],
+
+            'CommentContent',
+            'TimeStamp',
+
+            ['class' => 'yii\grid\ActionColumn', ],
+        ],
+    ]); ?>
 </div>
