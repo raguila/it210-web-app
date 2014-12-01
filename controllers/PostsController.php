@@ -63,6 +63,7 @@ class PostsController extends Controller
         $model = new Posts();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
             return $this->redirect(['view', 'id' => $model->PostID]);
         } else {
             return $this->render('create', [
