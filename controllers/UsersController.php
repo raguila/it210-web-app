@@ -60,9 +60,20 @@ class UsersController extends Controller
      */
     public function actionCreate()
     {
+        $success = false;
+        
         $model = new Users();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())){            
+
+            $model->Password = md5($model->Password);
+
+            if($model->save()){
+                $success = true;
+            }
+        }   
+
+        if($success){
             return $this->redirect(['view', 'id' => $model->UserID]);
         } else {
             return $this->render('create', [
