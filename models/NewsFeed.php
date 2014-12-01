@@ -26,8 +26,10 @@ use Yii;
  * @property AttachmentType $attachmentType
  * @property Users $user
  */
-class Posts extends \yii\db\ActiveRecord
+class NewsFeed extends \yii\db\ActiveRecord
 {
+
+    public $Name;
     /**
      * @inheritdoc
      */
@@ -45,6 +47,7 @@ class Posts extends \yii\db\ActiveRecord
             [['PostTypeID', 'AttachmentTypeID', 'UserID', 'Likes', 'Pinned'], 'integer'],
             [['PostContent', 'TimeStamp'], 'required'],
             [['TimeStamp'], 'safe'],
+            [['Name'], 'string', 'max' => 20],
             [['PostTitle', 'Tags', 'Attachment'], 'string', 'max' => 50],
             [['PostContent'], 'string', 'max' => 255]
         ];
@@ -56,65 +59,19 @@ class Posts extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'PostID' => 'Post ID',
-            'PostTitle' => 'Post Title',
-            'PostTypeID' => 'Post Type ID',
             'PostContent' => 'Post Content',
             'Tags' => 'Tags',
-            'Attachment' => 'Attachment',
-            'AttachmentTypeID' => 'Attachment Type ID',
-            'UserID' => 'User ID',
-            'Likes' => 'Likes',
-            'Pinned' => 'Pinned',
-            'TimeStamp' => 'Time Stamp',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getComments()
+    public function post()
     {
-        return $this->hasMany(Comments::className(), ['PostID' => 'PostID']);
-    }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getNotifications()
-    {
-        return $this->hasMany(Notifications::className(), ['PostID' => 'PostID']);
+        return true;
     }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPostType()
-    {
-        return $this->hasOne(PostType::className(), ['PostTypeID' => 'PostTypeID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTag()
-    {
-        return $this->hasOne(Tags::className(), ['TagID' => 'TagID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getAttachmentType()
-    {
-        return $this->hasOne(AttachmentType::className(), ['AttachmentTypeID' => 'AttachmentTypeID']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getUser()
     {
         return $this->hasOne(Users::className(), ['UserID' => 'UserID']);
     }
+
 }

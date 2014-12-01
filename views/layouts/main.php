@@ -28,8 +28,8 @@ $bundle = AppAsset::register($this);
 <?php $this->beginBody() ?>
     <div class="wrap">
         <?php
-            $isAdmin = (!Yii::$app->user->isGuest && Yii::$app->session['usertype']==1)?true:false;
-            $isUser = (!Yii::$app->user->isGuest && Yii::$app->session['usertype']==2)?true:false;
+            $isGuest = Yii::$app->user->isGuest;
+            $isAdmin = ((!$isGuest)&&(Yii::$app->user->identity->UserTypeID ==1));
             NavBar::begin([
                 'brandLabel' => 'IT 210 Web Application',
                 'brandUrl' => Yii::$app->homeUrl,
@@ -41,6 +41,9 @@ $bundle = AppAsset::register($this);
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
                     ['label' => 'Home', 'url' => ['/site/index']],
+                    $isAdmin?
+                    ['label' => 'News Feed', 'url' => ['/site/feed']]:
+                    "",
                     $isAdmin?
                     ['label' => 'Users', 'url' => ['/users/index']]: //additional
                     "",
@@ -67,8 +70,8 @@ $bundle = AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-            <p class="pull-right"><?= Yii::powered() ?></p>
+            <p class="pull-left">&copy; IT 210 Web App <?= date('Y') ?></p>
+            <!-- <p class="pull-right"><?= Yii::powered() ?></p> -->
         </div>
     </footer>
 

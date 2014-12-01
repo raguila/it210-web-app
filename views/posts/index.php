@@ -27,13 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'PostID',
             'PostTitle',
-            'PostTypeID',
+            //'PostTypeID',
             'PostContent',
-            'TagID',
+            'Tags',
             // 'Attachment',
             // 'AttachmentTypeID',
             // 'UserID',
-            // 'Like',
+            // 'Likes',
             // 'Pinned',
             // 'TimeStamp',
 

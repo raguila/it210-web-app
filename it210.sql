@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2014 at 06:37 PM
+-- Generation Time: Dec 01, 2014 at 03:42 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -31,7 +31,14 @@ CREATE TABLE IF NOT EXISTS `attachment_type` (
   `AttachmentTypeDescription` varchar(30) NOT NULL,
   `AttachmentTypePath` varchar(20) NOT NULL,
   PRIMARY KEY (`AttachmentTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `attachment_type`
+--
+
+INSERT INTO `attachment_type` (`AttachmentTypeID`, `AttachmentTypeDescription`, `AttachmentTypePath`) VALUES
+(1, 'File', 'web/attachment/file/');
 
 -- --------------------------------------------------------
 
@@ -79,22 +86,41 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `PostID` int(11) NOT NULL AUTO_INCREMENT,
-  `PostTitle` varchar(50) NOT NULL,
-  `PostTypeID` int(11) NOT NULL,
+  `PostTitle` varchar(50) DEFAULT NULL,
+  `PostTypeID` int(11) NOT NULL DEFAULT '1',
   `PostContent` varchar(255) NOT NULL,
-  `TagID` int(11) NOT NULL,
-  `Attachment` varchar(50) NOT NULL,
-  `AttachmentTypeID` int(11) NOT NULL,
-  `UserID` int(11) NOT NULL,
-  `Like` int(11) NOT NULL,
-  `Pinned` int(1) NOT NULL,
+  `Tags` varchar(50) DEFAULT NULL COMMENT 'separate by comma ',
+  `Attachment` varchar(50) NOT NULL DEFAULT 'attachment/post/',
+  `AttachmentTypeID` int(11) NOT NULL DEFAULT '1',
+  `UserID` int(11) NOT NULL DEFAULT '1',
+  `Likes` int(11) DEFAULT NULL,
+  `Pinned` int(1) DEFAULT NULL,
   `TimeStamp` timestamp NOT NULL,
   PRIMARY KEY (`PostID`),
   KEY `PostTypeID` (`PostTypeID`),
-  KEY `TagID` (`TagID`),
+  KEY `TagID` (`Tags`),
   KEY `AttachmentTypeID` (`AttachmentTypeID`),
   KEY `UserID` (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`PostID`, `PostTitle`, `PostTypeID`, `PostContent`, `Tags`, `Attachment`, `AttachmentTypeID`, `UserID`, `Likes`, `Pinned`, `TimeStamp`) VALUES
+(3, 'Sample', 1, 'Sample Post! :)', 'sample, first', '/sample/path', 1, 1, 0, 0, '2014-12-01 02:41:17'),
+(4, NULL, 1, 'Sample naman. Please. Kahit isa lang. :(', NULL, 'attachment/post/', 1, 1, NULL, NULL, '0000-00-00 00:00:00'),
+(5, NULL, 1, 'Isa pa please. Gumana ka naman. :(', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-29 16:00:00'),
+(6, NULL, 1, 'Isa pa po. Para macheck yung time. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:02:12'),
+(7, 'Sample nam', 1, 'Sample naman para sa title! :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:06:51'),
+(8, 'Sample ulit par...', 1, 'Sample ulit para sa title. Mukang totoo na dapat. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:09:04'),
+(9, 'Sample po ulit....', 1, 'Sample po ulit. Sana tama na ituuuu! ', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:56:01'),
+(10, 'Sample po ulit....', 1, 'Sample po ulit. Maling kanina yung nalog e. :(', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:58:56'),
+(11, 'Sample sana tam...', 1, 'Sample sana tama ang user. :))', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:08:58'),
+(12, 'Hi po. Hihihihi...', 1, 'Hi po. Hihihihi <3', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:12:21'),
+(13, 'Sample po ulit....', 1, 'Sample po ulit. Sana maprint na yung users. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:20:57'),
+(14, 'SAmple. Labas n...', 1, 'SAmple. Labas naman yung username. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:23:13'),
+(15, 'aasaasasas...', 1, 'aasaasasas', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 19:23:33');
 
 -- --------------------------------------------------------
 
@@ -106,7 +132,14 @@ CREATE TABLE IF NOT EXISTS `post_type` (
   `PostTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `PostTypeDescription` varchar(30) NOT NULL,
   PRIMARY KEY (`PostTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `post_type`
+--
+
+INSERT INTO `post_type` (`PostTypeID`, `PostTypeDescription`) VALUES
+(1, 'Announcements');
 
 -- --------------------------------------------------------
 
@@ -193,7 +226,6 @@ ALTER TABLE `notifications`
 --
 ALTER TABLE `posts`
   ADD CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`PostTypeID`) REFERENCES `post_type` (`PostTypeID`),
-  ADD CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`TagID`) REFERENCES `tags` (`TagID`),
   ADD CONSTRAINT `posts_ibfk_3` FOREIGN KEY (`AttachmentTypeID`) REFERENCES `attachment_type` (`AttachmentTypeID`),
   ADD CONSTRAINT `posts_ibfk_4` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`);
 

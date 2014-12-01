@@ -8,6 +8,9 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\NewsFeed;
+use app\models\Users;
+use yii\data\ActiveDataProvider;
 
 class SiteController extends Controller
 {
@@ -17,10 +20,10 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                'only' => ['create','logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout','create'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -93,5 +96,48 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionFeed()
+    {
+        //$searchModel = new PostsSearch();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new NewsFeed();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => NewsFeed::find(),
+        ]);
+        
+        
+        $success = false;
+
+        if ($model->load(Yii::$app->request->post())) {
+            //$model->PostContent = "Sample na naman";
+            $model->TimeStamp = date("Y-m-d H:i:s");
+            $post_title = substr($model->PostContent, 0, 15);
+            $model->PostTitle = $post_title."...";   
+
+            Yii::info($model->TimeStamp, __METHOD__);
+            $user = Users::find()->where(['UserID' => $model->UserID])->one();
+            
+            Yii::info($user->FirstName, __METHOD__);
+            $model->Name = $user->FirstName;
+
+            if($model->save()){
+                $success = true;
+            }
+        } 
+        if($success){
+            return $this->refresh();
+        } else {
+            
+            //$users = Users::find()->where(['UserID' => $dataProvider->UserID]);
+            //Yii::info($dataProvider, __METHOD__);
+            return $this->render('feed', [
+                //'searchModel' => $searchModel,
+                'model' => $model,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
     }
 }

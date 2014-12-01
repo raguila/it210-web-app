@@ -18,8 +18,8 @@ class PostsSearch extends Posts
     public function rules()
     {
         return [
-            [['PostID', 'PostTypeID', 'TagID', 'AttachmentTypeID', 'UserID', 'Like', 'Pinned'], 'integer'],
-            [['PostTitle', 'PostContent', 'Attachment', 'TimeStamp'], 'safe'],
+            [['PostID', 'PostTypeID', 'AttachmentTypeID', 'UserID', 'Likes', 'Pinned'], 'integer'],
+           [['PostTitle', 'PostContent', 'Tags', 'Attachment', 'TimeStamp'], 'safe'],
         ];
     }
 
@@ -54,16 +54,16 @@ class PostsSearch extends Posts
         $query->andFilterWhere([
             'PostID' => $this->PostID,
             'PostTypeID' => $this->PostTypeID,
-            'TagID' => $this->TagID,
             'AttachmentTypeID' => $this->AttachmentTypeID,
             'UserID' => $this->UserID,
-            'Like' => $this->Like,
+            'Likes' => $this->Likes,
             'Pinned' => $this->Pinned,
             'TimeStamp' => $this->TimeStamp,
         ]);
 
         $query->andFilterWhere(['like', 'PostTitle', $this->PostTitle])
             ->andFilterWhere(['like', 'PostContent', $this->PostContent])
+            ->andFilterWhere(['like', 'Tags', $this->Tags]) 
             ->andFilterWhere(['like', 'Attachment', $this->Attachment]);
 
         return $dataProvider;

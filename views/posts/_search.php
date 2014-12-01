@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'PostContent') ?>
 
-    <?= $form->field($model, 'TagID') ?>
+    <?= $form->field($model, 'Tags') ?>
 
     <?php // echo $form->field($model, 'Attachment') ?>
 
@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'UserID') ?>
 
-    <?php // echo $form->field($model, 'Like') ?>
+    <?php // echo $form->field($model, 'Likes') ?>
 
     <?php // echo $form->field($model, 'Pinned') ?>
 

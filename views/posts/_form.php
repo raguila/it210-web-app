@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'PostContent')->textInput(['maxlength' => 255]) ?>
 
-    <?= $form->field($model, 'TagID')->textInput() ?>
+    <?= $form->field($model, 'Tags')->textInput(['maxlength' => 50]) ?>
 
     <?= $form->field($model, 'Attachment')->textInput(['maxlength' => 50]) ?>
 
@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'UserID')->textInput() ?>
 
-    <?= $form->field($model, 'Like')->textInput() ?>
+    <?= $form->field($model, 'Likes')->textInput() ?>
 
     <?= $form->field($model, 'Pinned')->textInput() ?>
 

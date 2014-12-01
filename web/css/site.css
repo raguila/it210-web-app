@@ -89,3 +89,13 @@ a.desc:after {
     padding: 10px 20px;
     margin: 0 0 15px 0;
 }
+.big-space{
+    padding-top: 50px;
+}
+.medium-space{
+    padding-top: 20px;
+}
+.border{
+    border-style: solid;
+    border-width: 1px;
+}
