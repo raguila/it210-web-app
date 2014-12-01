@@ -61,7 +61,10 @@ $this->params['breadcrumbs'][] = $this->title;
                         // 'Pinned',
                         // 'TimeStamp',
 
-                        //['class' => 'yii\grid\ActionColumn'],
+                        ['class' => 'yii\grid\ActionColumn',
+                         'template' => '{view}',
+                          'controller' => 'posts'
+                        ],
                     ],
                 ]); ?>
          </div>

@@ -36,7 +36,7 @@ class Comments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['CommentContent', 'Attachment', 'AttachmentTypeID', 'UserID', 'PostID', 'Like', 'TimeStamp'], 'required'],
+            [['CommentContent', 'UserID', 'PostID', 'Like', 'TimeStamp'], 'required'],
             [['AttachmentTypeID', 'UserID', 'PostID', 'Like'], 'integer'],
             [['TimeStamp'], 'safe'],
             [['CommentContent'], 'string', 'max' => 255],
