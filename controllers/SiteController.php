@@ -104,6 +104,7 @@ class SiteController extends Controller
         //$searchModel = new PostsSearch();
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $model = new NewsFeed();
+        $models = NewsFeed::find()->all();
         //$query = NewsFeed::find();
 
         $searchModel = new NewsFeedSearch();
@@ -127,12 +128,14 @@ class SiteController extends Controller
             if($model->save()){
                 $success = true;
             }
-        } 
+        }
+         
         if($success){
             return $this->refresh();
         } else {
             return $this->render('feed', [
                 'model' => $model,
+                'models' => $models,
                 'dataProvider' => $dataProvider,
             ]);
         }

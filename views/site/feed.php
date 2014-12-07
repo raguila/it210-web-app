@@ -39,14 +39,15 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
-             <?= GridView::widget([
+             
+             <!-- GridView::widget([
                     'dataProvider' => $dataProvider,
                     //'filterModel' => $searchModel,
                     'columns' => [
                         //['class' => 'yii\grid\SerialColumn'],
 
                         //'PostID',
-                        //'PostTitle',
+                        //'PostTitle',s
                         //'PostTypeID',
                         'PostContent',
                         // [
@@ -66,7 +67,37 @@ $this->params['breadcrumbs'][] = $this->title;
                           'controller' => 'posts'
                         ],
                     ],
-                ]); ?>
+                ]);  -->
+                
+        
+        <?php $i = 0;
+            foreach ($models as $post): ?>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <h3><?php echo ($post->PostContent); ?></h3> 
+                    by <?php echo ($post->Name)?> 
+                    <br>
+                    <!-- <span class="glyphicon glyphicon-eye-open"></span> -->
+                    <?= Html::a( 'Like', 'index.php?r=posts/view&id='.$post->PostID, $options = []) ?>
+                    |
+                    <?=
+                            Html::a('Comment', 'index.php?r=posts/view&id='.$post->PostID, [
+                            'title' => Yii::t('yii', 'View'),
+                            'data-pjax' => '0',
+                        ]);
+                     ?>
+                     <?php $form = ActiveForm::begin([
+                        'id' => 'comment-form-'.$post->PostID,
+                        'options' => ['class' => 'form-inline'],
+                    ]); ?>
+                        <?= $form->field($model, 'PostContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 1, 'cols' => 45, 'placeholder' => 'Comment' ]) ?>
+                        <?= Html::submitButton('Comment' , ['class' =>'btn btn-primary']) ?>
+                        <?= Html::submitButton('Upload' , ['class' =>'btn btn-primary']) ?>
+                    <?php ActiveForm::end(); ?>
+                </li>
+            </ul>
+        <?php endforeach; ?>
+
          </div>
          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
             Right Text

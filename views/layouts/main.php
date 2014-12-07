@@ -23,7 +23,7 @@ $bundle = AppAsset::register($this);
 </head>
 <body>
 <div>
-    <?php echo $bundle->baseUrl;  ?>
+    <?php //echo $bundle->baseUrl;  ?>
 </div>    
 <?php $this->beginBody() ?>
     <div class="wrap">
