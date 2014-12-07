@@ -10,6 +10,10 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Comments;
 use app\models\search\CommentsSearch;
+use yii\db\ActiveRecord;
+use yii\db\Query;
+use yii\data\ActiveDataProvider;
+
 
 /**
  * PostsController implements the CRUD actions for Posts model.
@@ -50,17 +54,17 @@ class PostsController extends Controller
      */
     public function actionView($id)
     {
-        /*return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);*/
         $searchModel = new CommentsSearch();
-        $comments = $searchModel->search(Yii::$app->request->queryParams);
+        $comments = Comments::findAll(['PostID' => $id]);
 
         $newComment = new Comments();
-        $newComment->TimeStamp = date("Y-m-d H:i:s");
 
-        if ($newComment->load(Yii::$app->request->post()) && $newComment->save()) {
-            return $this->redirect(['view', 'id' => $newComment->PostID]);
+        if ($newComment->load(Yii::$app->request->post())) {
+            $newComment->TimeStamp = date("Y-m-d H:i:s");
+            
+            if($newComment->save()) {
+                return $this->redirect(['view', 'id' => $newComment->PostID]);    
+            }
         } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
