@@ -99,3 +99,7 @@ a.desc:after {
     border-style: solid;
     border-width: 1px;
 }
+
+textarea { 
+    resize:none; 
+}

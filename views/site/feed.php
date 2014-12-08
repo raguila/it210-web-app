@@ -30,7 +30,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'Pinned',['template' => "{input}",])->hiddenInput(['value'=>0]) ?>
 
             <!-- <button type="submit">Post</button> -->
-            <?= Html::submitButton('Post' , ['class' =>'btn btn-primary pull-right']) ?>
+            <div class="pull-right">
+                <?= Html::submitButton('Post' , ['class' =>'btn btn-primary ']) ?>
+                <?= Html::submitButton('Upload' , ['class' =>'btn btn-primary ']) ?>
+            </div>
           <?php ActiveForm::end(); ?>
         </div>
     </div>
@@ -48,9 +51,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::a( 'Comment', 'index.php?r=posts/view&id='.$popular->PostID, $options = []) ?>
                     |
                     <span class="glyphicon glyphicon-thumbs-up"></span> <?php echo ("<b>".$popular->Likes.'</b>')?>
+                    
+                    <?php 
+                        $form = ActiveForm::begin([
+                            'options' => ['class' => 'form-group'],
+                        ]); 
+                    ?>
+                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 2, 'cols' => 27, 'placeholder' => 'Comment' ]) ?>
+                        
+                        <?= Html::submitButton('Comment' , ['class' =>'btn btn-sm btn-primary']) ?>
+                        <?= Html::submitButton('Upload' , ['class' =>'btn btn-sm btn-primary']) ?>
 
+                        <?= $form->field($newComment, 'Attachment', ['template' => "{input}"])->hiddenInput(['maxlength' => 50, 'value' => 'NA']) ?>
+                        <?= $form->field($newComment, 'AttachmentTypeID', ['template' => "{input}"])->hiddenInput(['value'=>1]) ?>
+                        <?= $form->field($newComment, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
+                        <?= $form->field($newComment, 'PostID',['template' => "{input}",])->hiddenInput(['value'=>$popular->PostID]) ?>
+                        <?= $form->field($newComment, 'Like', ['template' => "{input}"])->hiddenInput(['value'=>0]) ?>
                     
-                    
+                    <?php ActiveForm::end(); ?>
+
                     <ul class="list-group">
                         <?php foreach ($comments_popular as $comment): ?>
                         <li class="list-group-item">
@@ -62,7 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 ?>
 
                             </b>
-                            <p class="list-group-item-text"><?php echo ($comment->CommentContent); ?></p>
+                            <p class="list-group-item-text"><?php echo htmlspecialchars($comment->CommentContent); ?></p>
                         </li>
                         <?php endforeach; ?>
                     </ul>
@@ -92,10 +111,7 @@ $this->params['breadcrumbs'][] = $this->title;
                  
                     <?php 
                         $form = ActiveForm::begin([
-                            'id' => 'comment-form-'.$post->PostID,
                             'options' => ['class' => 'form-inline'],
-                            // 'action' => 'index.php?r=comments/create',
-                            // 'method' => 'post'
                         ]); 
                     ?>
                         <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 1, 'cols' => 45, 'placeholder' => 'Comment' ]) ?>
@@ -152,6 +168,25 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::a( 'Comment', 'index.php?r=posts/view&id='.$pinned->PostID, $options = []) ?>
                     |
                     <span class="glyphicon glyphicon-thumbs-up"></span> <?php echo ("<b>".$pinned->Likes.'</b>')?>
+
+                    <?php 
+                        $form = ActiveForm::begin([
+                            'options' => ['class' => 'form-group'],
+                        ]); 
+                    ?>
+                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 2, 'cols' => 27, 'placeholder' => 'Comment' ]) ?>
+                        
+                        <?= Html::submitButton('Comment' , ['class' =>'btn btn-sm btn-primary']) ?>
+                        <?= Html::submitButton('Upload' , ['class' =>'btn btn-sm btn-primary']) ?>
+
+                        <?= $form->field($newComment, 'Attachment', ['template' => "{input}"])->hiddenInput(['maxlength' => 50, 'value' => 'NA']) ?>
+                        <?= $form->field($newComment, 'AttachmentTypeID', ['template' => "{input}"])->hiddenInput(['value'=>1]) ?>
+                        <?= $form->field($newComment, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
+                        <?= $form->field($newComment, 'PostID',['template' => "{input}",])->hiddenInput(['value'=>$pinned->PostID]) ?>
+                        <?= $form->field($newComment, 'Like', ['template' => "{input}"])->hiddenInput(['value'=>0]) ?>
+                    
+                    <?php ActiveForm::end(); ?>
+                    
 
                     <ul class="list-group">
                         <?php foreach ($comments_pinned as $comment): ?>
