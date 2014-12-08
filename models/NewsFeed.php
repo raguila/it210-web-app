@@ -79,4 +79,12 @@ class NewsFeed extends \yii\db\ActiveRecord
         return $this->users->FirstName.' '.$this->users->LastName;
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getComments()
+    {
+        return $this->hasMany(Comments::className(), ['PostID' => 'PostID']);
+    }
+
 }

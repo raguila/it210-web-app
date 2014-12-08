@@ -65,6 +65,7 @@ class PostsController extends Controller
             if($newComment->save()) {
                 return $this->redirect(['view', 'id' => $newComment->PostID]);    
             }
+            
         } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),

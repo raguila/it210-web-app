@@ -5,6 +5,7 @@ namespace app\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use app\models\NewsFeed;
 
 /**
@@ -43,31 +44,19 @@ class NewsFeedSearch extends NewsFeed
      */
     public function search($params)
     {
-        $query = NewsFeed::find();
+        //$query = NewsFeed::find()->orderBy('PostID')->joinWith(['users'])->all();
+        
+        $sql = "SELECT * FROM posts ORDER BY `TimeStamp` ASC";
+        $query = NewsFeed::findBySql($sql)->all();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $query,
         ]);
 
         if (!($this->load($params) && $this->validate())) {
-            $query->joinWith(['users']);
+            //$query->joinWith(['users']);
             return $dataProvider;
         }
-
-        $query->andFilterWhere([
-            'PostID' => $this->PostID,
-            'PostTypeID' => $this->PostTypeID,
-            'AttachmentTypeID' => $this->AttachmentTypeID,
-            'UserID' => $this->UserID,
-            'Likes' => $this->Likes,
-            'Pinned' => $this->Pinned,
-            'TimeStamp' => $this->TimeStamp,
-        ]);
-
-        $query->andFilterWhere(['like', 'PostTitle', $this->PostTitle])
-            ->andFilterWhere(['like', 'PostContent', $this->PostContent])
-            ->andFilterWhere(['like', 'Tags', $this->Tags]) 
-            ->andFilterWhere(['like', 'Attachment', $this->Attachment]);
 
         return $dataProvider;
     }
