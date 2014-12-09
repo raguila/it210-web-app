@@ -46,7 +46,8 @@ class NewsFeed extends \yii\db\ActiveRecord
             [['PostTypeID', 'AttachmentTypeID', 'UserID', 'Likes', 'Pinned'], 'integer'],
             [['TimeStamp'], 'safe'],
             //[['Name'], 'string', 'max' => 20],
-            [['PostTitle', 'Tags', 'Attachment'], 'string', 'max' => 50],
+            [['PostTitle', 'Tags'], 'string', 'max' => 50],
+            [['Attachment'], 'file','skipOnEmpty' => true],
             [['PostContent'], 'string', 'max' => 255]
         ];
     }

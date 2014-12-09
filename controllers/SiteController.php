@@ -15,6 +15,7 @@ use app\models\Comments;
 use yii\data\ActiveDataProvider;
 use yii\data\Sort;
 use yii\web\JqueryAsset;
+use yii\web\UploadedFile;
 
 class SiteController extends Controller
 {
@@ -128,16 +129,13 @@ class SiteController extends Controller
                 ],
             ],
         ]);
+        $sql4 = "SELECT MAX(PostID) AS PostID FROM posts";
+        $max_id = NewsFeed::findBySql($sql4)->one();
+        $upload_id_posts = $max_id->PostID;
 
-         // $models = NewsFeed::find()
-         // ->orderBy($sort->orders)
-         // ->all();
-
-        
-        //$comments = $models->comments;
-
-        // $searchModel = new NewsFeedSearch();
-        // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $sql5 = "SELECT MAX(CommentID) AS CommentID FROM comments";
+        $max_id2 = Comments::findBySql($sql5)->one();
+        $upload_id_comments = $max_id2->CommentID;
 
         $success = false;
 
@@ -145,9 +143,17 @@ class SiteController extends Controller
             //$model->PostContent = "Sample na naman";
             $model->TimeStamp = date("Y-m-d H:i:s");
             $post_title = substr($model->PostContent, 0, 15);
-            $model->PostTitle = $post_title."...";   
+            $model->PostTitle = $post_title."...";
 
             $user = Users::find()->where(['UserID' => $model->UserID])->one();
+   
+            $model->Attachment = UploadedFile::getInstance($model, 'Attachment');   
+            if ($model->Attachment && $model->validate()) {                
+                $model->Attachment->saveAs('../uploads/posts/' . $model->Attachment->baseName .'_00000'.$upload_id_posts. '.' . $model->Attachment->extension);
+                $model->Attachment = $model->Attachment->baseName .'_00000'.$upload_id_posts. '.' . $model->Attachment->extension;
+            }
+            
+
             if($model->save()){
                 $success = true;
             }
@@ -155,6 +161,12 @@ class SiteController extends Controller
 
         if ($newComment->load(Yii::$app->request->post())) {
             $newComment->TimeStamp = date("Y-m-d H:i:s");
+
+            $newComment->Attachment = UploadedFile::getInstance($newComment, 'Attachment');   
+            if ($newComment->Attachment && $newComment->validate()) {                
+                $newComment->Attachment->saveAs('../uploads/comments/' . $newComment->Attachment->baseName .'_11111'.$upload_id_comments. '.' . $newComment->Attachment->extension);
+                $newComment->Attachment = $newComment->Attachment->baseName .'_11111'.$upload_id_comments. '.' . $newComment->Attachment->extension;
+            }
             
             if($newComment->save()) {
                 $success = true; 
@@ -208,6 +220,22 @@ class SiteController extends Controller
         $new_pinned->save();
 
         return $this->redirect('index.php?r=site/feed',302);
+    }
+
+    public function actionUpload()
+    {
+        $model = new NewsFeed();
+
+        if (Yii::$app->request->isPost) {
+            $model->Attachment = UploadedFile::getInstance($model, 'Attachment');
+
+            if ($model->Attachment && $model->validate()) {                
+                $model->Attachment->saveAs('uploads/' . $model->Attachment->baseName . '.' . $model->Attachment->extension);
+            }
+        }
+
+        //return $this->redirect('index.php?r=site/feed',302);
+        //return $this->render('upload', ['model' => $model]);
     }
 
 }

@@ -19,9 +19,11 @@ $this->params['breadcrumbs'][] = $this->title;
             Profile Picture
         </div>
         <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-          <?php $form = ActiveForm::begin(); ?>
+          <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
             <!-- <textarea  placeholder="Wazzup?" rows="2" cols="70"></textarea> -->
             <?= $form->field($model, 'PostContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 4, 'cols' => 70, 'placeholder' => 'Wazzup?' ]) ?>
+            
+            <?= $form->field($model, 'Attachment',['template' => "{input}",])->fileInput() ?>
             
             <?= $form->field($model, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
 
@@ -30,10 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'Pinned',['template' => "{input}",])->hiddenInput(['value'=>0]) ?>
 
             <!-- <button type="submit">Post</button> -->
-            <div class="pull-right">
-                <?= Html::submitButton('Post' , ['class' =>'btn btn-primary ']) ?>
-                <?= Html::submitButton('Upload' , ['class' =>'btn btn-primary ']) ?>
-            </div>
+                <?= Html::submitButton('Post' , ['class' =>'btn btn-primary pull-right']) ?>
           <?php ActiveForm::end(); ?>
         </div>
     </div>
@@ -44,6 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <ul class="list-group">
                 <li class="list-group-item">
                     <?php echo ($popular->PostContent); ?><br>
+                    
+                    <?php if($popular->Attachment != NULL){ ?>
+                    <b><?php
+                    echo  ("Attachment:");
+                    ?></b>
+                    <?= Html::a( 'Download', '../uploads/'.$popular->Attachment,  $options = ['target'=>'_blank','download'=>'']); ?>
+                    |
+                    <?= Html::a( 'Preview', '../uploads/'.$popular->Attachment,  $options = ['target'=>'_blank']); ?>
+                    <?php }?>
+
                     by <?php echo ($popular->Name)?> 
                     <br>
                     <?= Html::a( 'Like', 'index.php?r=site/like&id='.$popular->PostID, $options = []) ?>
@@ -54,15 +63,14 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                     <?php 
                         $form = ActiveForm::begin([
-                            'options' => ['class' => 'form-group'],
+                            'options' => ['class' => 'form-group', 'enctype' => 'multipart/form-data'],
                         ]); 
                     ?>
-                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 2, 'cols' => 27, 'placeholder' => 'Comment' ]) ?>
+                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 1, 'cols' => 27, 'placeholder' => 'Comment' ]) ?>
                         
+                        <?= $form->field($newComment, 'Attachment',['template' => "{input}",])->fileInput(['id'=>'popular-comment-attachment']) ?>
                         <?= Html::submitButton('Comment' , ['class' =>'btn btn-sm btn-primary']) ?>
-                        <?= Html::submitButton('Upload' , ['class' =>'btn btn-sm btn-primary']) ?>
-
-                        <?= $form->field($newComment, 'Attachment', ['template' => "{input}"])->hiddenInput(['maxlength' => 50, 'value' => 'NA']) ?>
+                        
                         <?= $form->field($newComment, 'AttachmentTypeID', ['template' => "{input}"])->hiddenInput(['value'=>1]) ?>
                         <?= $form->field($newComment, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
                         <?= $form->field($newComment, 'PostID',['template' => "{input}",])->hiddenInput(['value'=>$popular->PostID]) ?>
@@ -82,6 +90,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             </b>
                             <p class="list-group-item-text"><?php echo htmlspecialchars($comment->CommentContent); ?></p>
+                            <?php if($comment->Attachment != NULL){ ?>
+                            <b><?php
+                            echo  ("Attachment:");
+                            ?></b><br>
+                            <?= Html::a( 'Download', '../uploads/comments/'.$comment->Attachment,  $options = ['target'=>'_blank','download'=>'']); ?>
+                            |
+                            <?= Html::a( 'Preview', '../uploads/comments/'.$comment->Attachment,  $options = ['target'=>'_blank']); ?>
+                            <?php }?>
                         </li>
                         <?php endforeach; ?>
                     </ul>
@@ -91,13 +107,27 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <h4>News Feed</h4>
         <?php 
+            $i = 1;
             
             ///echo "SORT BY: ".$sort->link('TimeStamp');
             foreach ($models as $post): ?>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <?php echo ($post->PostContent); ?><br>
-                    by <?php echo ($post->Name)?> 
+                    
+                    <?php echo ($post->PostContent); ?>
+                    
+
+                    <?php if($post->Attachment != NULL){ ?>
+                    <b><?php
+                    echo  ("Attachment:");
+                    ?></b>
+                    <?= Html::a( 'Download', '../uploads/posts/'.$post->Attachment,  $options = ['target'=>'_blank','download'=>'']); ?>
+                    |
+                    <?= Html::a( 'Preview', '../uploads/posts/'.$post->Attachment,  $options = ['target'=>'_blank']); ?>
+                    <?php }?>
+                    
+                    <br>
+                    by <b><?php echo ($post->Name)?></b> 
                     <br>
                     <!-- <span class="glyphicon glyphicon-eye-open"></span> -->
 
@@ -108,26 +138,26 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= Html::a( 'Pin Post', 'index.php?r=site/pin&id='.$post->PostID, $options = []) ?>
                     |
                     <span class="glyphicon glyphicon-thumbs-up"></span> <?php echo ("<b>".$post->Likes.'</b>')?>
-                 
-                    <?php 
-                        $form = ActiveForm::begin([
-                            'options' => ['class' => 'form-inline'],
-                        ]); 
-                    ?>
-                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 1, 'cols' => 45, 'placeholder' => 'Comment' ]) ?>
-                        <?= $form->field($newComment, 'Attachment', ['template' => "{input}"])->hiddenInput(['maxlength' => 50, 'value' => 'NA']) ?>
+                   
+                   <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+
+                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 1, 'cols' => 55, 'placeholder' => 'Comment' ]) ?>
+                        <div class="form-inline">
+                            <?= $form->field($newComment, 'Attachment',['template' => "{input}",])->fileInput(['id'=>'comment-attachment-'.$i]) ?>
+                            <?= Html::submitButton('Comment' , ['class' =>'btn btn-sm btn-primary pull-right']) ?>
+                        </div>
                         <?= $form->field($newComment, 'AttachmentTypeID', ['template' => "{input}"])->hiddenInput(['value'=>1]) ?>
-                        <?= Html::submitButton('Comment' , ['class' =>'btn btn-primary']) ?>
-                        <?= Html::submitButton('Upload' , ['class' =>'btn btn-primary']) ?>
                         <?= $form->field($newComment, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
                         <?= $form->field($newComment, 'PostID',['template' => "{input}",])->hiddenInput(['value'=>$post->PostID]) ?>
                         <?= $form->field($newComment, 'Like', ['template' => "{input}"])->hiddenInput(['value'=>0]) ?>
+                    <?php ActiveForm::end(); ?>
 
                         <?php
                             $tempPost = $post->PostID;
                             $tempComments = Comments::findAll(['PostID' => $tempPost]);
                             
                             if($tempComments != NULL){ ?>
+
                             <ul class="list-group">    <?php foreach ($tempComments as $tempComment):  ?>
                                     <li class="list-group-item">
                                         <b class="list-group-item-heading">
@@ -139,17 +169,27 @@ $this->params['breadcrumbs'][] = $this->title;
 
                                         </b>
                                         <p class="list-group-item-text"><?php
-                                            //$string = htmlspecialchars($tempComment->CommentContent); 
                                             echo htmlspecialchars($tempComment->CommentContent);
-                                            //echo "<br>";
                                         ?></p>
+
+                                        <?php if($tempComment->Attachment != NULL){ ?>
+                                        <b><?php
+                                        echo  ("Attachment:");
+                                        ?></b>
+                                        <?= Html::a( 'Download', '../uploads/comments/'.$tempComment->Attachment,  $options = ['target'=>'_blank','download'=>'']); ?>
+                                        |
+                                        <?= Html::a( 'Preview', '../uploads/comments/'.$tempComment->Attachment,  $options = ['target'=>'_blank']); ?>
+                                        <?php }?>
+
                                     </li>
-                                    <?php endforeach; ?>
+                                    <?php 
+                                    $i++;
+                                    endforeach; ?>
                             </ul>
                             <?php } ?>
                         
 
-                    <?php ActiveForm::end(); ?>
+                    
 
                 </li>
             </ul>
@@ -161,6 +201,16 @@ $this->params['breadcrumbs'][] = $this->title;
             <ul class="list-group">
                 <li class="list-group-item">
                     <?php echo ($pinned->PostContent); ?><br>
+
+                    <?php if($pinned->Attachment != NULL){ ?>
+                    <b><?php
+                    echo  ("Attachment:");
+                    ?></b>
+                    <?= Html::a( 'Download', '../uploads/'.$pinned->Attachment,  $options = ['target'=>'_blank','download'=>'']); ?>
+                    |
+                    <?= Html::a( 'Preview', '../uploads/'.$pinned->Attachment,  $options = ['target'=>'_blank']); ?>
+                    <?php }?>
+
                     by <?php echo ($pinned->Name)?> 
                     <br>
                     <?= Html::a( 'Like', 'index.php?r=site/like&id='.$pinned->PostID, $options = []) ?>
@@ -171,15 +221,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                     <?php 
                         $form = ActiveForm::begin([
-                            'options' => ['class' => 'form-group'],
+                            'options' => ['class' => 'form-group', 'enctype' => 'multipart/form-data'],
                         ]); 
                     ?>
-                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 2, 'cols' => 27, 'placeholder' => 'Comment' ]) ?>
+                        <?= $form->field($newComment, 'CommentContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 1, 'cols' => 27, 'placeholder' => 'Comment' ]) ?>
                         
+                        <?= $form->field($newComment, 'Attachment',['template' => "{input}",])->fileInput(['id'=>'pinned-comment-attachment']) ?>
                         <?= Html::submitButton('Comment' , ['class' =>'btn btn-sm btn-primary']) ?>
-                        <?= Html::submitButton('Upload' , ['class' =>'btn btn-sm btn-primary']) ?>
 
-                        <?= $form->field($newComment, 'Attachment', ['template' => "{input}"])->hiddenInput(['maxlength' => 50, 'value' => 'NA']) ?>
                         <?= $form->field($newComment, 'AttachmentTypeID', ['template' => "{input}"])->hiddenInput(['value'=>1]) ?>
                         <?= $form->field($newComment, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
                         <?= $form->field($newComment, 'PostID',['template' => "{input}",])->hiddenInput(['value'=>$pinned->PostID]) ?>
@@ -200,6 +249,14 @@ $this->params['breadcrumbs'][] = $this->title;
 
                             </b>
                             <p class="list-group-item-text"><?php echo htmlspecialchars($comment->CommentContent); ?></p>
+                            <?php if($comment->Attachment != NULL){ ?>
+                            <b><?php
+                            echo  ("Attachment:");
+                            ?></b><br>
+                            <?= Html::a( 'Download', '../uploads/comments/'.$comment->Attachment,  $options = ['target'=>'_blank','download'=>'']); ?>
+                            |
+                            <?= Html::a( 'Preview', '../uploads/comments/'.$comment->Attachment,  $options = ['target'=>'_blank']); ?>
+                            <?php }?>
                         </li>
                         <?php endforeach; ?>
                     </ul>

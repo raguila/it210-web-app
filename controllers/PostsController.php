@@ -13,6 +13,7 @@ use app\models\search\CommentsSearch;
 use yii\db\ActiveRecord;
 use yii\db\Query;
 use yii\data\ActiveDataProvider;
+use yii\web\UploadedFile;
 
 
 /**
@@ -59,8 +60,18 @@ class PostsController extends Controller
 
         $newComment = new Comments();
 
+        $sql = "SELECT MAX(CommentID) AS CommentID FROM comments";
+        $max_id = Comments::findBySql($sql)->one();
+        $upload_id_comments = $max_id->CommentID;
+        
         if ($newComment->load(Yii::$app->request->post())) {
             $newComment->TimeStamp = date("Y-m-d H:i:s");
+
+            $newComment->Attachment = UploadedFile::getInstance($newComment, 'Attachment');   
+            if ($newComment->Attachment && $newComment->validate()) {                
+                $newComment->Attachment->saveAs('../uploads/comments/' . $newComment->Attachment->baseName .'_11111'.$upload_id_comments. '.' . $newComment->Attachment->extension);
+                $newComment->Attachment = $newComment->Attachment->baseName .'_11111'.$upload_id_comments. '.' . $newComment->Attachment->extension;
+            }
             
             if($newComment->save()) {
                 return $this->redirect(['view', 'id' => $newComment->PostID]);    

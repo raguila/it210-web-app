@@ -39,7 +39,7 @@ class Comments extends \yii\db\ActiveRecord
             [['AttachmentTypeID', 'UserID', 'PostID', 'Like'], 'integer'],
             [['TimeStamp'], 'safe'],
             [['CommentContent'], 'string', 'max' => 255],
-            [['Attachment'], 'string', 'max' => 50]
+            [['Attachment'], 'file','skipOnEmpty' => true],
         ];
     }
 
