@@ -4,26 +4,43 @@ use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use app\models\Users;
 use app\models\Comments;
-
+use app\assets\AppAsset;
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model app\models\LoginForm */
 
+
 $this->title = 'News Feed';
 $this->params['breadcrumbs'][] = $this->title;
+$bundle = AppAsset::register($this);
 ?>
 <div class="site-feed">
     <div class="medium-space"></div>
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-            Profile Picture
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <img src="<?=$bundle->baseUrl.'/images/'.Yii::$app->user->identity->Picture?>" height="100px" width="100px"></img>
+            <br>
+            <br>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <div class="medium-space"></div>
+            <?= Yii::$app->user->identity->FirstName ?> 
+            <?= Yii::$app->user->identity->LastName ?>
+            <br>
+            IT 210 - 
+            <?= Yii::$app->user->identity->ClassSection ?>
+            <br>
+            <?= Yii::$app->user->identity->StudentNumber ?>
+            </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
           <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
             <!-- <textarea  placeholder="Wazzup?" rows="2" cols="70"></textarea> -->
             <?= $form->field($model, 'PostContent',['template' => "{input}",])->textarea(['maxlength' => 255, 'rows' => 4, 'cols' => 70, 'placeholder' => 'Wazzup?' ]) ?>
             
-            <?= $form->field($model, 'Attachment',['template' => "{input}",])->fileInput() ?>
+            
             
             <?= $form->field($model, 'UserID',['template' => "{input}",])->hiddenInput(['value'=>Yii::$app->user->identity->UserID]) ?>
 
@@ -32,7 +49,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= $form->field($model, 'Pinned',['template' => "{input}",])->hiddenInput(['value'=>0]) ?>
 
             <!-- <button type="submit">Post</button> -->
+            <div class="form-inline">
+                <?= $form->field($model, 'Attachment',['template' => "{input}",])->fileInput() ?>
                 <?= Html::submitButton('Post' , ['class' =>'btn btn-primary pull-right']) ?>
+            </div>
+
           <?php ActiveForm::end(); ?>
         </div>
     </div>
