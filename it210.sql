@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 01, 2014 at 03:42 AM
+-- Generation Time: Dec 10, 2014 at 02:56 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -49,7 +49,7 @@ INSERT INTO `attachment_type` (`AttachmentTypeID`, `AttachmentTypeDescription`, 
 CREATE TABLE IF NOT EXISTS `comments` (
   `CommentID` int(11) NOT NULL AUTO_INCREMENT,
   `CommentContent` varchar(255) NOT NULL,
-  `Attachment` varchar(50) NOT NULL,
+  `Attachment` varchar(50) DEFAULT NULL,
   `AttachmentTypeID` int(11) NOT NULL,
   `UserID` int(11) NOT NULL,
   `PostID` int(11) NOT NULL,
@@ -59,7 +59,42 @@ CREATE TABLE IF NOT EXISTS `comments` (
   KEY `AttachmentTypeID` (`AttachmentTypeID`),
   KEY `UserID` (`UserID`),
   KEY `PostID` (`PostID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`CommentID`, `CommentContent`, `Attachment`, `AttachmentTypeID`, `UserID`, `PostID`, `Like`, `TimeStamp`) VALUES
+(1, 'Sample Comment', NULL, 1, 1, 3, 0, '2014-12-07 10:45:30'),
+(2, 'Sample comment!!!', NULL, 1, 1, 21, 0, '2014-12-07 17:23:25'),
+(3, 'Sample Comment! Gumanaaaa ka na. Please.', NULL, 1, 1, 4, 0, '2014-12-07 22:01:48'),
+(4, 'Isa pang comment. Belat. :P', NULL, 1, 1, 4, 0, '2014-12-07 22:02:29'),
+(5, 'Isa pang comment. :)', NULL, 1, 1, 3, 0, '2014-12-08 07:17:17'),
+(6, 'Isa pang comment ulit! :)', NULL, 1, 1, 3, 0, '2014-12-08 10:05:26'),
+(7, 'Sample! 4th comment! :)', NULL, 1, 1, 3, 0, '2014-12-08 10:21:16'),
+(8, 'Sample. 5th Comment! :)', NULL, 1, 1, 3, 0, '2014-12-08 10:26:19'),
+(9, 'Comment ulit. 6th na. :)', NULL, 1, 1, 3, 0, '2014-12-08 10:47:47'),
+(10, 'I </3 EZ DAWG', NULL, 1, 1, 20, 0, '2014-12-08 10:49:04'),
+(11, 'I EZ DAWG', NULL, 1, 1, 20, 0, '2014-12-08 10:49:23'),
+(12, 'I <3 EZ DAWG', NULL, 1, 1, 20, 0, '2014-12-08 10:49:51'),
+(13, 'I </3 ', NULL, 1, 1, 20, 0, '2014-12-08 10:50:03'),
+(14, '</3', NULL, 1, 1, 20, 0, '2014-12-08 10:58:48'),
+(15, 'HiHi :*', NULL, 1, 1, 20, 0, '2014-12-08 12:26:38'),
+(16, 'Bagong comment! :)', NULL, 1, 1, 3, 0, '2014-12-08 12:34:47'),
+(17, 'w3w', NULL, 1, 1, 22, 0, '2014-12-08 12:35:01'),
+(18, 'Comment dito o. :)', NULL, 1, 1, 4, 0, '2014-12-08 15:18:26'),
+(19, 'Dagdag pang comment. :))', NULL, 1, 1, 3, 0, '2014-12-08 15:28:06'),
+(20, 'EZ DAWG', NULL, 1, 1, 20, 0, '2014-12-08 15:47:30'),
+(21, 'Hello po. :)', NULL, 1, 1, 27, 0, '2014-12-09 10:47:03'),
+(22, 'Dag dag comment', NULL, 1, 1, 29, 0, '2014-12-09 15:20:45'),
+(23, 'Comment', 'naruto_22.jpg', 1, 1, 29, 0, '2014-12-09 18:40:10'),
+(24, 'Sample comment sa popular na may attachment. :)', 'naruto_1111123.jpg', 1, 1, 3, 0, '2014-12-09 18:38:14'),
+(25, 'Lagyan din ng file! ', 'naruto_1111124.jpg', 1, 1, 27, 0, '2014-12-09 18:38:14'),
+(26, 'Sample comment from individual post. :)', '', 1, 1, 29, 0, '2014-12-09 18:29:58'),
+(27, 'Sample comment again from post with file. :)', 'it210_1111126.sql', 1, 1, 29, 0, '2014-12-09 18:38:36'),
+(28, 'Sample na may attachment. :)', 'naruto_1111127.jpg', 1, 1, 29, 0, '2014-12-10 04:23:32'),
+(29, 'ghjghjgh', NULL, 1, 1, 16, 0, '2014-12-10 04:27:35');
 
 -- --------------------------------------------------------
 
@@ -90,7 +125,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `PostTypeID` int(11) NOT NULL DEFAULT '1',
   `PostContent` varchar(255) NOT NULL,
   `Tags` varchar(50) DEFAULT NULL COMMENT 'separate by comma ',
-  `Attachment` varchar(50) NOT NULL DEFAULT 'attachment/post/',
+  `Attachment` varchar(50) DEFAULT NULL,
   `AttachmentTypeID` int(11) NOT NULL DEFAULT '1',
   `UserID` int(11) NOT NULL DEFAULT '1',
   `Likes` int(11) DEFAULT NULL,
@@ -101,26 +136,38 @@ CREATE TABLE IF NOT EXISTS `posts` (
   KEY `TagID` (`Tags`),
   KEY `AttachmentTypeID` (`AttachmentTypeID`),
   KEY `UserID` (`UserID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 --
 -- Dumping data for table `posts`
 --
 
 INSERT INTO `posts` (`PostID`, `PostTitle`, `PostTypeID`, `PostContent`, `Tags`, `Attachment`, `AttachmentTypeID`, `UserID`, `Likes`, `Pinned`, `TimeStamp`) VALUES
-(3, 'Sample', 1, 'Sample Post! :)', 'sample, first', '/sample/path', 1, 1, 0, 0, '2014-12-01 02:41:17'),
-(4, NULL, 1, 'Sample naman. Please. Kahit isa lang. :(', NULL, 'attachment/post/', 1, 1, NULL, NULL, '0000-00-00 00:00:00'),
-(5, NULL, 1, 'Isa pa please. Gumana ka naman. :(', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-29 16:00:00'),
-(6, NULL, 1, 'Isa pa po. Para macheck yung time. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:02:12'),
-(7, 'Sample nam', 1, 'Sample naman para sa title! :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:06:51'),
-(8, 'Sample ulit par...', 1, 'Sample ulit para sa title. Mukang totoo na dapat. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:09:04'),
-(9, 'Sample po ulit....', 1, 'Sample po ulit. Sana tama na ituuuu! ', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:56:01'),
-(10, 'Sample po ulit....', 1, 'Sample po ulit. Maling kanina yung nalog e. :(', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 10:58:56'),
-(11, 'Sample sana tam...', 1, 'Sample sana tama ang user. :))', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:08:58'),
-(12, 'Hi po. Hihihihi...', 1, 'Hi po. Hihihihi <3', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:12:21'),
-(13, 'Sample po ulit....', 1, 'Sample po ulit. Sana maprint na yung users. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:20:57'),
-(14, 'SAmple. Labas n...', 1, 'SAmple. Labas naman yung username. :)', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 11:23:13'),
-(15, 'aasaasasas...', 1, 'aasaasasas', NULL, 'attachment/post/', 1, 1, NULL, NULL, '2014-11-30 19:23:33');
+(3, 'Sample', 1, 'Sample Post! :)', 'sample, first', NULL, 1, 1, 25, 0, '2014-12-08 14:38:24'),
+(4, 'Sample', 1, 'Sample naman. Please. Kahit isa lang. :(', 'sample', NULL, 1, 1, 23, NULL, '2014-12-09 14:17:15'),
+(7, 'Sample nam', 1, 'Sample naman para sa title! :)', 'sample', NULL, 1, 1, 1, NULL, '2014-12-09 14:17:15'),
+(8, 'Sample ulit par...', 1, 'Sample ulit para sa title. Mukang totoo na dapat. :)', 'sample', NULL, 1, 1, 14, NULL, '2014-12-09 14:17:15'),
+(9, 'Sample po ulit....', 1, 'Sample po ulit. Sana tama na ituuuu! ', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(10, 'Sample po ulit....', 1, 'Sample po ulit. Maling kanina yung nalog e. :(', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(11, 'Sample sana tam...', 1, 'Sample sana tama ang user. :))', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(12, 'Hi po. Hihihihi...', 1, 'Hi po. Hihihihi <3', NULL, NULL, 1, 1, 0, NULL, '2014-11-30 11:12:21'),
+(13, 'Sample po ulit....', 1, 'Sample po ulit. Sana maprint na yung users. :)', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(14, 'SAmple. Labas n...', 1, 'SAmple. Labas naman yung username. :)', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(15, 'aasaasasas...', 1, 'aasaasasas', NULL, NULL, 1, 1, 0, NULL, '2014-11-30 19:23:33'),
+(16, 'Sample po na ba...', 1, 'Sample po na bago. :)) December na o. ', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(17, 'Sample muna uli...', 1, 'Sample muna ulit. Dapat tama ka na talaga. As in tamang tama! ', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(18, 'Sample na bago....', 1, 'Sample na bago. :)) ', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(19, 'Sample. Dapat t...', 1, 'Sample. Dapat tama ang oras. Haha. :)) ', 'sample', NULL, 1, 1, 0, NULL, '2014-12-09 14:17:15'),
+(20, 'I <3 EZ DAWG...', 1, 'I <3 EZ DAWG', NULL, NULL, 1, 1, 3, 0, '2014-12-08 11:43:17'),
+(21, 'Sample na may s...', 1, 'Sample na may sorting something. :)', NULL, NULL, 1, 1, 5, NULL, '2014-12-07 15:26:10'),
+(22, 'Pinakabago! :)...', 1, 'Pinakabago! :)', NULL, NULL, 1, 1, 1, 0, '2014-12-08 14:37:58'),
+(23, 'So may nakauplo...', 1, 'So may nakaupload dito. :)', NULL, NULL, 1, 1, 0, 0, '2014-12-09 08:19:34'),
+(24, 'Sample at may n...', 1, 'Sample at may nakaupload dito. :)', NULL, 'naruto.jpg', 1, 1, 0, 0, '2014-12-09 08:41:42'),
+(25, 'Sample na may u...', 1, 'Sample na may upload na kakaiba ang filename. :)', NULL, 'naruto_24.jpg', 1, 1, 0, 0, '2014-12-09 09:01:29'),
+(26, 'Sample ulit na ...', 1, 'Sample ulit na dapat iba na ang filename. :)', NULL, 'naruto_25.jpg', 1, 1, 0, 0, '2014-12-09 09:01:29'),
+(27, 'Sample na sana ...', 1, 'Sample na sana mabago na yung file_name. :)', NULL, 'naruto_26.jpg', 1, 1, 2, 1, '2014-12-09 09:01:29'),
+(28, 'Sample ulit. Sa...', 1, 'Sample ulit. Sana tama na ayung file Name. Huhu.', 'sample', 'naruto_27.jpg', 1, 1, 0, 0, '2014-12-09 14:14:32'),
+(29, 'Posts. ...', 1, 'Posts. ', NULL, NULL, 1, 1, 1, 0, '2014-12-09 14:49:31');
 
 -- --------------------------------------------------------
 
@@ -173,14 +220,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `EmployeeNumber` varchar(15) NOT NULL,
   PRIMARY KEY (`UserID`),
   KEY `UserTypeID` (`UserTypeID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`UserID`, `FirstName`, `MiddleName`, `LastName`, `UserName`, `Password`, `UserTypeID`, `ClassSection`, `Picture`, `StudentNumber`, `EmployeeNumber`) VALUES
-(1, 'Roinand', 'Baral', 'Aguila', 'roi', '4eb2f856e8c3c20f2a0bd9cd45197918', 1, 'EF-1L', 'NA', '2009-23791', '');
+(1, 'Roinand', 'Baral', 'Aguila', 'roi', '4eb2f856e8c3c20f2a0bd9cd45197918', 1, 'EF-1L', 'roi.png', '2009-23791', ''),
+(2, 'Sample', 'Sample', 'Sample', 'sample', '5e8ff9bf55ba3508199d22e984129be6', 1, 'EF-1L', '/asdasd/asd', '2009-12345', '123456789');
 
 -- --------------------------------------------------------
 
