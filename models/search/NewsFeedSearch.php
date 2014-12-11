@@ -17,6 +17,7 @@ class NewsFeedSearch extends NewsFeed
      * @inheritdoc
      */
     public $Name;
+    public $Picture;
 
     public function rules()
     {

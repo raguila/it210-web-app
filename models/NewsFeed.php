@@ -79,6 +79,11 @@ class NewsFeed extends \yii\db\ActiveRecord
         return $this->users->FirstName.' '.$this->users->LastName;
     }
 
+    public function getPicture() 
+    {
+        return $this->users->Picture;
+    }
+
     /**
      * @return \yii\db\ActiveQuery
      */

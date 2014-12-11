@@ -15,6 +15,9 @@ $bundle = AppAsset::register($this);
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
 <head>
+    <link rel="shortcut icon" href="<?=$bundle->baseUrl.'/images/'?>favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?=$bundle->baseUrl.'/images/'?>favicon.ico" type="image/x-icon">
+
     <meta charset="<?= Yii::$app->charset ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
@@ -40,15 +43,9 @@ $bundle = AppAsset::register($this);
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
                 'items' => [
-                    ['label' => 'Home', 'url' => ['/site/index']],
                     $isAdmin?
                     ['label' => 'News Feed', 'url' => ['/site/feed']]:
                     "",
-                    $isAdmin?
-                    ['label' => 'Users', 'url' => ['/users/index']]: //additional
-                    "",
-                    ['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Contact', 'url' => ['/site/contact']],
                     
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
@@ -70,7 +67,7 @@ $bundle = AppAsset::register($this);
 
     <footer class="footer">
         <div class="container">
-            <p class="pull-left">&copy; IT 210 Web App <?= date('Y') ?></p>
+            <p class="pull-left">&copy; IT 210 Web App <?= date('Y') ?> | Aguila.Carandang.Mendiola</p>
             <!-- <p class="pull-right"><?= Yii::powered() ?></p> -->
         </div>
     </footer>

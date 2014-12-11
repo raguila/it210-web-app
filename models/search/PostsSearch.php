@@ -15,6 +15,8 @@ class PostsSearch extends Posts
     /**
      * @inheritdoc
      */
+    public $Name;
+    public $Picture;
     public function rules()
     {
         return [
@@ -48,6 +50,7 @@ class PostsSearch extends Posts
         ]);
 
         if (!($this->load($params) && $this->validate())) {
+            $query->joinWith(['users']);
             return $dataProvider;
         }
 

@@ -100,7 +100,7 @@ class CommentsController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect('index.php?r=site/feed',302);
     }
 
     /**

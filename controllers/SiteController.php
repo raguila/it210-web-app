@@ -20,6 +20,7 @@ use yii\web\UploadedFile;
 class SiteController extends Controller
 {
     //public $defaultAction = 'login'; //change login the default welcome or homepage
+    public $defaultAction = 'login';
     public function behaviors()
     {
         return [
@@ -58,7 +59,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect('index.php?r=site/feed',302);
     }
 
     public function actionLogin()
@@ -69,7 +70,7 @@ class SiteController extends Controller
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect('index.php?r=site/feed',302);
         } else {
             return $this->render('login', [
                 'model' => $model,

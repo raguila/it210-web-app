@@ -113,8 +113,17 @@ class Posts extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUser()
+    public function getUsers()
     {
         return $this->hasOne(Users::className(), ['UserID' => 'UserID']);
+    } 
+
+    public function getName() 
+    {
+        return $this->users->FirstName.' '.$this->users->LastName;
+    }
+    public function getPicture() 
+    {
+        return $this->users->Picture;
     }
 }
