@@ -52,7 +52,7 @@ $bundle = AppAsset::register($this);
                 </li>
             </ul>
         </div>
-
+        <br>
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-pull-3 col-lg-pull-3">
           <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
             <!-- <textarea  placeholder="Wazzup?" rows="2" cols="70"></textarea> -->
