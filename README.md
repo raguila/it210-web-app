@@ -1,28 +1,31 @@
-Yii 2 Basic Application Template
-================================
-
-Yii 2 Basic Application Template is a skeleton Yii 2 application best for
-rapidly creating small projects.
-
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+BACKGROUND
+----------
+Submitted as final project for IT210 (Web Application Development) under AP Mini May Markie Sandoval.
+This project is the 'Discussion boards' module of the hypothetical IT210 web app that caters to students'
+and teachers' needs for engaging in classroom activities online.
 
 
-DIRECTORY STRUCTURE
--------------------
+CONTRIBUTORS
+------------
+Roinand Aguila
+Monina Carandang
+Rikki Lee Mendiola
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+
+OVERVIEW OF FUNCTION
+--------------------
+User management is not in the scope of this project but simple a User model and controller is used for the
+requisite Log In/Log out functions.
+
+Upon logging in, the user is redirected to a home page of feeds. All the latest posts are displayed, as well
+as popular posts, and the current pinned post. 'Like' buttons are used to determine a post's popularity. Quick
+commenting is allowed in the feeds page. Clicking on 'view' will direct the user to a post's indiviual post
+page, which will allow the user to leave comments and view all the comments on that particular post. Options
+such as delete and update are only available for the current user's own posts.
+
+The user interface is simple and eye-catching. It takes design cues from the social networking trends of disaplying
+feeds and updates without being too cluttered.
+
 
 
 
@@ -83,7 +86,3 @@ return [
     'charset' => 'utf8',
 ];
 ```
-
-**NOTE:** Yii won't create the database for you, this has to be done manually before you can access it.
-
-Also check and edit the other files in the `config/` directory to customize your application.
