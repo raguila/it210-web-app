@@ -65,7 +65,7 @@ class SiteController extends Controller
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect('index.php?r=site/feed',302);
         }
 
         $model = new LoginForm();
