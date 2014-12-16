@@ -46,7 +46,7 @@ $bundle = AppAsset::register($this);
                     $isAdmin?
                     ['label' => 'News Feed', 'url' => ['/site/feed']]:
                     "",
-                    
+                    ['label' => 'About Us', 'url' => ['/site/about']],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
                         ['label' => 'Logout (' . Yii::$app->user->identity->UserName . ')',
